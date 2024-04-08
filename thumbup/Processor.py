@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def snapshot(work):
     microseconds, input_filename, output_filename = work
     av_container = av.open(input_filename)
-    av_container.seek(microseconds, 'time')
+    av_container.seek(microseconds)
     frame = next(av_container.decode(video=0))
     im = frame.to_image()
     im.save(output_filename)
@@ -164,7 +164,7 @@ class Processor:
             font = ImageFont.truetype(default_font, size=20)
         except IOError as e:
             logging.warn(
-                "can't load font {}. Fall back to default".format(e.message))
+                "can't load font {}. Fall back to default".format(e))
             font = ImageFont.load_default()
 
         output_draw = ImageDraw.Draw(output_img)
@@ -211,7 +211,7 @@ class Processor:
                     del draw
                 except IOError as e:
                     logging.error(
-                        "Can't gen thumbnail for ({}, {}): {}".format(i, j, e.message))
+                        "Can't gen thumbnail for ({}, {}): {}".format(i, j, e))
                     continue
                 output_img.paste(im, (x, y))
 
